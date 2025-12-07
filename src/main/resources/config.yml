@@ -1,0 +1,19 @@
+farms:
+  key:
+    block:
+    delay:
+
+mines:
+  key:
+    loc1:
+      x:
+      y:
+      z:
+    loc2:
+      x:
+      y:
+      z:
+    delay:
+    world:
+
+    
