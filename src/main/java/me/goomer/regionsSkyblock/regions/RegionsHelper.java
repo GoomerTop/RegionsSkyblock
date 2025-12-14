@@ -27,9 +27,10 @@ public class RegionsHelper {
         int z2 = plugin.getConfig().getInt("mines." + key + ".loc2.z");
         Loc loc2 = new Loc(x2, y2, z2, world);
 
-        int delay = plugin.getConfig().getInt("mines."+key+".delay");
+        int minDelay = plugin.getConfig().getInt("mines."+key+".minDelay");
+        int maxDelay = plugin.getConfig().getInt("mines."+key+".maxDelay");
 
-        return new Mine(loc1, loc2, delay, key);
+        return new Mine(loc1, loc2, minDelay, maxDelay, key);
     }
 
     public Mine getMineByLocation(Location location){
@@ -43,7 +44,8 @@ public class RegionsHelper {
     }
 
     public Farm getFarmByKey(String key){
-        int delay = plugin.getConfig().getInt("farms."+key+".delay");
+        int minDelay = plugin.getConfig().getInt("farms."+key+".minDelay");
+        int maxDelay = plugin.getConfig().getInt("farms."+key+".maxDelay");
         String block = plugin.getConfig().getString("farms."+key+".block");
 
         if(plugin.getConfig().contains("farms." + key + ".star")){
@@ -53,10 +55,10 @@ public class RegionsHelper {
             String world = plugin.getConfig().getString("farms."+key+".star.world");
             Loc star = new Loc(x, y, z, world);
 
-            return new Farm(key, block, delay, star);
+            return new Farm(key, block, minDelay, maxDelay, star);
         }
 
-        return new Farm(key, block, delay);
+        return new Farm(key, block, minDelay, maxDelay);
     }
 
     public Farm getFarmByBlock(Block block){
@@ -64,6 +66,35 @@ public class RegionsHelper {
             Farm farm = getFarmByKey(key);
             if(farm.contains(block)){
                 return farm;
+            }
+        }
+        return null;
+    }
+
+    public Tree getTreeByKey(String key){
+        String world = plugin.getConfig().getString("trees."+key+".world");
+
+        int x1 = plugin.getConfig().getInt("trees." + key + ".loc1.x");
+        int y1 = plugin.getConfig().getInt("trees." + key + ".loc1.y");
+        int z1 = plugin.getConfig().getInt("trees." + key + ".loc1.z");
+        Loc loc1 = new Loc(x1, y1, z1, world);
+
+        int x2 = plugin.getConfig().getInt("trees." + key + ".loc2.x");
+        int y2 = plugin.getConfig().getInt("trees." + key + ".loc2.y");
+        int z2 = plugin.getConfig().getInt("trees." + key + ".loc2.z");
+        Loc loc2 = new Loc(x2, y2, z2, world);
+
+        int minDelay = plugin.getConfig().getInt("trees."+key+".minDelay");
+        int maxDelay = plugin.getConfig().getInt("trees."+key+".maxDelay");
+
+        return new Tree(loc1, loc2, minDelay, maxDelay, key);
+    }
+
+    public Tree getTreeByLocation(Location location){
+        for(String key : plugin.getConfig().getConfigurationSection("trees").getKeys(false)){
+            Tree tree = getTreeByKey(key);
+            if(tree.contains(location)){
+                return tree;
             }
         }
         return null;

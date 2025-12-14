@@ -2,24 +2,40 @@ package me.goomer.regionsSkyblock.regions;
 
 import org.bukkit.Location;
 
+import java.util.Random;
+
 public class Mine {
     private Loc loc1, loc2;
     private String key;
-    private int delay;
+    private int minDelay, maxDelay;
 
-    public Mine(Loc loc1, Loc loc2, int delay, String key){
+    public Mine(Loc loc1, Loc loc2, int minDelay, int maxDelay, String key){
         this.loc1 = loc1;
         this.loc2 = loc2;
-        this.delay = delay;
+        this.minDelay = minDelay;
+        this.maxDelay = maxDelay;
         this.key = key;
     }
 
     public int getDelay() {
-        return delay;
+        Random random = new Random();
+        return random.nextInt(minDelay, maxDelay+1);
     }
 
-    public void setDelay(int delay) {
-        this.delay = delay;
+    public int getMinDelay() {
+        return minDelay;
+    }
+
+    public void setMinDelay(int minDelay) {
+        this.minDelay = minDelay;
+    }
+
+    public int getMaxDelay() {
+        return maxDelay;
+    }
+
+    public void setMaxDelay(int maxDelay) {
+        this.maxDelay = maxDelay;
     }
 
     public Loc getLoc1() {

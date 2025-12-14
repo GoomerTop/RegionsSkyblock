@@ -2,3 +2,10 @@ name: RegionsSkyblock
 version: '1.0'
 main: me.goomer.regionsSkyblock.RegionsSkyblock
 api-version: '1.21'
+commands:
+  addmine:
+  addfarm:
+  addtree:
+  removemine:
+  removefarm:
+  removetree:

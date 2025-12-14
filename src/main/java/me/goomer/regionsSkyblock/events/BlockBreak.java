@@ -4,6 +4,7 @@ import me.goomer.regionsSkyblock.RegionsSkyblock;
 import me.goomer.regionsSkyblock.regions.Farm;
 import me.goomer.regionsSkyblock.regions.Mine;
 import me.goomer.regionsSkyblock.regions.RegionsHelper;
+import me.goomer.regionsSkyblock.regions.Tree;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class BlockBreak implements Listener {
 
@@ -36,35 +38,42 @@ public class BlockBreak implements Listener {
         }
         Mine mine = helper.getMineByLocation(block.getLocation());
         if(mine != null){
-            if(mine.contains(block.getLocation())){
-                if(block.getType()== Material.COBBLESTONE){
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            block.setType(Material.BEDROCK);
-                        }
-                    }.runTask(plugin);
-                }
-                else{
-                    boolean loop = plugin.exists(mine.getKey());
-                    plugin.addBlock(mine.getKey(), block);
-                    if(!loop){
-                        mineLoop(mine);
+            if(block.getType()== Material.COBBLESTONE){
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        block.setType(Material.BEDROCK);
                     }
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            block.setType(Material.COBBLESTONE);
-                        }
-                    }.runTask(plugin);
-                }
+                }.runTask(plugin);
             }
+            else{
+                boolean loop = plugin.exists(mine.getKey());
+                plugin.addBlock(mine.getKey(), block);
+                if(!loop){
+                    mineLoop(mine);
+                }
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        block.setType(Material.COBBLESTONE);
+                    }
+                }.runTask(plugin);
+            }
+
             return;
+        }
+        Tree tree = helper.getTreeByLocation(block.getLocation());
+        if(tree!=null){
+            boolean loop = plugin.exists(tree.getKey());
+            plugin.addBlock(tree.getKey(), block);
+            if(!loop){
+                respawnTree(tree);
+            }
         }
     }
 
     public void mineLoop(Mine mine){
-        new BukkitRunnable() {
+        BukkitTask task = new BukkitRunnable() {
             @Override
             public void run() {
                 if(plugin.exists(mine.getKey())){
@@ -90,5 +99,14 @@ public class BlockBreak implements Listener {
                 }
             }
         }.runTaskLater(plugin, farm.getDelay());
+    }
+
+    public void respawnTree(Tree tree){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                plugin.regenerateByKey(tree.getKey());
+            }
+        }.runTaskLater(plugin, tree.getDelay());
     }
 }

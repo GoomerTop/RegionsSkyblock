@@ -1,7 +1,12 @@
 farms:
   key:
     block:
-    delay:
+    minDelay:
+    maxDelay:
+    star:
+      x:
+      y:
+      z:
 
 mines:
   key:
@@ -13,7 +18,22 @@ mines:
       x:
       y:
       z:
-    delay:
+    minDelay:
+    maxDelay:
+    world:
+
+trees:
+  key:
+    loc1:
+      x:
+      y:
+      z:
+    loc2:
+      x:
+      y:
+      z:
+    minDelay:
+    maxDelay:
     world:
 
     
