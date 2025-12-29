@@ -29,11 +29,16 @@ public class NewBlockBreak implements Listener {
         Material material = block.getType();
         Location location = block.getLocation();
         BlockLoc blockLoc = new BlockLoc(block);
+        boolean farmCheck = true;
+        if(block.getBlockData() instanceof Ageable ageable){
+            farmCheck = ageable.getAge()==ageable.getMaximumAge();
+        }
+        boolean finalFarmCheck = farmCheck;
         BukkitRunnable main = new BukkitRunnable() {
             @Override
             public void run() {
                 Farm farm = helper.getFarmByBlock(block);
-                if(farm != null){
+                if(farm != null && finalFarmCheck){
                     BukkitRunnable task = new BukkitRunnable() {
                         @Override
                         public void run() {
