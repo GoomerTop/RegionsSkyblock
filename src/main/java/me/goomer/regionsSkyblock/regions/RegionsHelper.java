@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import java.util.ArrayList;
+
 public class RegionsHelper {
 
     private RegionsSkyblock plugin;
@@ -69,6 +71,16 @@ public class RegionsHelper {
             }
         }
         return null;
+    }
+
+    public ArrayList<Farm> getAllFarms(){
+        ArrayList<Farm> farms = new ArrayList<>();
+
+        for(String key : plugin.getConfig().getConfigurationSection("farms").getKeys(false)){
+            farms.add(getFarmByKey(key));
+        }
+
+        return farms;
     }
 
     public Tree getTreeByKey(String key){

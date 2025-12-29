@@ -14,7 +14,7 @@ public class AddFarm implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    // /addfarm <key> <block> <minDelay> <maxDelay> [starX] [starY] [starZ]
+    // /addfarm <key> <block> <minDelay> <maxDelay> [starX] [starY] [starZ] [world]
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -29,14 +29,18 @@ public class AddFarm implements CommandExecutor {
                 plugin.getConfig().set("farms." + key + ".minDelay", minDelay);
                 plugin.getConfig().set("farms." + key + ".maxDelay", maxDelay);
 
-                if(strings.length >= 7){
+                if(strings.length >= 8){
                     int starX = Integer.parseInt(strings[4]);
                     int starY = Integer.parseInt(strings[5]);
                     int starZ = Integer.parseInt(strings[6]);
+                    String world = strings[7];
 
                     plugin.getConfig().set("farms." + key + ".star.x", starX);
                     plugin.getConfig().set("farms." + key + ".star.y", starY);
                     plugin.getConfig().set("farms." + key + ".star.z", starZ);
+                    plugin.getConfig().set("farms." + key + ".star.world", world);
+
+                    plugin.addStar(key,starX, starY, starZ, world);
                 }
 
                 plugin.saveConfig();

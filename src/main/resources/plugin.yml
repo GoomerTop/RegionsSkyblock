@@ -9,3 +9,4 @@ commands:
   removemine:
   removefarm:
   removetree:
+  sethead:
