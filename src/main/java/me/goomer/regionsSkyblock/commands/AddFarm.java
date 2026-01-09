@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class AddFarm implements CommandExecutor {
+public class AddFarm extends SubCommand {
 
     private RegionsSkyblock plugin;
 
@@ -17,23 +17,23 @@ public class AddFarm implements CommandExecutor {
     // /addfarm <key> <block> <minDelay> <maxDelay> [starX] [starY] [starZ] [world]
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if(strings.length >= 4){
+    public void execute(CommandSender sender, String[] strings) {
+        if(strings.length >= 7){
             try{
-                String key = strings[0];
-                String block = strings[1];
-                int minDelay = Integer.parseInt(strings[2]);
-                int maxDelay = Integer.parseInt(strings[3]);
+                String key = strings[2];
+                String block = strings[3];
+                int minDelay = Integer.parseInt(strings[4]);
+                int maxDelay = Integer.parseInt(strings[5]);
 
                 plugin.getConfig().set("farms." + key + ".block", block);
                 plugin.getConfig().set("farms." + key + ".minDelay", minDelay);
                 plugin.getConfig().set("farms." + key + ".maxDelay", maxDelay);
 
-                if(strings.length >= 8){
-                    int starX = Integer.parseInt(strings[4]);
-                    int starY = Integer.parseInt(strings[5]);
-                    int starZ = Integer.parseInt(strings[6]);
-                    String world = strings[7];
+                if(strings.length >= 10){
+                    int starX = Integer.parseInt(strings[6]);
+                    int starY = Integer.parseInt(strings[7]);
+                    int starZ = Integer.parseInt(strings[8]);
+                    String world = strings[9];
 
                     plugin.getConfig().set("farms." + key + ".star.x", starX);
                     plugin.getConfig().set("farms." + key + ".star.y", starY);
@@ -45,24 +45,30 @@ public class AddFarm implements CommandExecutor {
 
                 plugin.saveConfig();
 
-                send(commandSender, "Added " + key);
+                send(sender, "Added " + key);
 
             }catch (NumberFormatException e){
-                send(commandSender, "You didn't enter the arguments correctly");
+                send(sender, "You didn't enter the arguments correctly");
             }
 
-            return true;
+            return;
+
         }
-        send(commandSender, "Not enough arguments");
-        return true;
+        send(sender, "Not enough arguments");
     }
 
-    public void send(CommandSender commandSender, String msg){
-        if(commandSender instanceof Player p){
-            p.sendMessage(msg);
-        }
-        else{
-            System.out.println(msg);
-        }
+    @Override
+    public String getName() {
+        return "farm";
+    }
+
+    @Override
+    public String getSyntax() {
+        return "/regions add farm <key> <block> <minDelay> <maxDelay> [starX] [starY] [starZ] [world]";
+    }
+
+    @Override
+    public String getDesc() {
+        return "add a new farm region";
     }
 }

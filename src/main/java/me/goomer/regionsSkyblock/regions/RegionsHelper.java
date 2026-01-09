@@ -45,6 +45,16 @@ public class RegionsHelper {
         return null;
     }
 
+    public ArrayList<Mine> getAllMines(){
+        ArrayList<Mine> mines = new ArrayList<>();
+
+        for(String key : plugin.getConfig().getConfigurationSection("mines").getKeys(false)){
+            mines.add(getMineByKey(key));
+        }
+
+        return mines;
+    }
+
     public Farm getFarmByKey(String key){
         int minDelay = plugin.getConfig().getInt("farms."+key+".minDelay");
         int maxDelay = plugin.getConfig().getInt("farms."+key+".maxDelay");
@@ -110,5 +120,15 @@ public class RegionsHelper {
             }
         }
         return null;
+    }
+
+    public ArrayList<Tree> getAllTrees(){
+        ArrayList<Tree> trees = new ArrayList<>();
+
+        for(String key : plugin.getConfig().getConfigurationSection("trees").getKeys(false)){
+            trees.add(getTreeByKey(key));
+        }
+
+        return trees;
     }
 }

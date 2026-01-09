@@ -42,16 +42,8 @@ public final class RegionsSkyblock extends JavaPlugin {
         blocks = new HashMap<>();
         stars = new HashMap<>();
 
-        // getServer().getPluginManager().registerEvents(new BlockBreak(this), this);
         getServer().getPluginManager().registerEvents(new NewBlockBreak(this), this);
-        //getCommand("regenerate").setExecutor(new Regenerate(this));
-        getCommand("addmine").setExecutor(new AddMine(this));
-        getCommand("addfarm").setExecutor(new AddFarm(this));
-        getCommand("addtree").setExecutor(new AddTree(this));
-        getCommand("removemine").setExecutor(new Remove(this));
-        getCommand("removefarm").setExecutor(new Remove(this));
-        getCommand("removetree").setExecutor(new Remove(this));
-        getCommand("sethead").setExecutor(new SetHead(this));
+        getCommand("regions").setExecutor(new MainCommand(this));
 
         regenerateStars();
 

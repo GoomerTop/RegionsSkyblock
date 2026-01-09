@@ -1,25 +1,22 @@
 package me.goomer.regionsSkyblock.commands;
 
 import me.goomer.regionsSkyblock.RegionsSkyblock;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-public class SetHead extends SubCommand {
-
+public class RemoveMine extends SubCommand{
     private RegionsSkyblock plugin;
 
-    public SetHead(RegionsSkyblock plugin){
+    public RemoveMine(RegionsSkyblock plugin){
         this.plugin = plugin;
     }
 
     @Override
     public void execute(CommandSender sender, String[] strings) {
-        if(strings.length>1){
-            plugin.getConfig().set("head",strings[0]);
+        if(strings.length>=3){
+            String key = strings[2];
+            plugin.getConfig().set("mines."+key,null);
             plugin.saveConfig();
-            send(sender, "Done");
+            send(sender, "Removed " + key);
             return;
         }
         send(sender, "Not enough arguments");
@@ -27,16 +24,16 @@ public class SetHead extends SubCommand {
 
     @Override
     public String getName() {
-        return "sethead";
+        return "mine";
     }
 
     @Override
     public String getSyntax() {
-        return "/regions sethead <link>";
+        return "/regions remove mine <region>";
     }
 
     @Override
     public String getDesc() {
-        return "set the head link for the star";
+        return "remove a mine region";
     }
 }

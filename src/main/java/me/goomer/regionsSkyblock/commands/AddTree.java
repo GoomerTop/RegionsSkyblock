@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class AddTree implements CommandExecutor {
+public class AddTree extends SubCommand {
 
     private RegionsSkyblock plugin;
 
@@ -14,28 +14,27 @@ public class AddTree implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    // /addmine <key> <x1> <y1> <z1> <x2> <y2> <z2> <minDelay> <maxDelay> <world>
-
+    // /addtree <key> <x1> <y1> <z1> <x2> <y2> <z2> <minDelay> <maxDelay> <world>
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if(strings.length>=10){
+    public void execute(CommandSender sender, String[] strings) {
+        if(strings.length>=12){
             try{
 
-                String key = strings[0];
+                String key = strings[2];
 
-                int x1 = Integer.parseInt(strings[1]);
-                int y1 = Integer.parseInt(strings[2]);
-                int z1 = Integer.parseInt(strings[3]);
+                int x1 = Integer.parseInt(strings[3]);
+                int y1 = Integer.parseInt(strings[4]);
+                int z1 = Integer.parseInt(strings[5]);
 
-                int x2 = Integer.parseInt(strings[4]);
-                int y2 = Integer.parseInt(strings[5]);
-                int z2 = Integer.parseInt(strings[6]);
+                int x2 = Integer.parseInt(strings[6]);
+                int y2 = Integer.parseInt(strings[7]);
+                int z2 = Integer.parseInt(strings[8]);
 
-                int minDelay = Integer.parseInt(strings[7]);
-                int maxDelay = Integer.parseInt(strings[8]);
+                int minDelay = Integer.parseInt(strings[9]);
+                int maxDelay = Integer.parseInt(strings[10]);
 
-                String world = strings[9];
+                String world = strings[11];
 
                 plugin.getConfig().set("trees."+ key + ".world", world);
                 plugin.getConfig().set("trees."+ key + ".minDelay", minDelay);
@@ -49,26 +48,31 @@ public class AddTree implements CommandExecutor {
 
                 plugin.saveConfig();
 
-                send(commandSender, "Added " + key);
+                send(sender, "Added " + key);
 
 
             } catch (NumberFormatException e){
-                send(commandSender, "You didn't enter the arguments correctly");
-                return true;
+                send(sender, "You didn't enter the arguments correctly");
+
             }
 
-            return true;
+            return;
         }
-        send(commandSender, "Not enough arguments");
-        return true;
+        send(sender, "Not enough arguments");
     }
 
-    public void send(CommandSender commandSender, String msg){
-        if(commandSender instanceof Player p){
-            p.sendMessage(msg);
-        }
-        else{
-            System.out.println(msg);
-        }
+    @Override
+    public String getName() {
+        return "tree";
+    }
+
+    @Override
+    public String getSyntax() {
+        return "/regions add tree <key> <x1> <y1> <z1> <x2> <y2> <z2> <minDelay> <maxDelay> <world>";
+    }
+
+    @Override
+    public String getDesc() {
+        return "add a new tree region";
     }
 }
